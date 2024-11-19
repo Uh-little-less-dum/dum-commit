@@ -1,0 +1,62 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+
+# The lines below are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/need to use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+
+version: 2
+before:
+  hooks:
+    # Turn this back on when ready to publish a full release version. Can't run tidy while I'm stuck offline so much, because that will clear all unused modules that I will eventually need.
+    # - go mod tidy
+    # you may remove this if you don't need go generate
+    - go generate ./...
+builds:
+  - binary: dum-commit
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+snapshot:
+  version_template: "{{ incpatch .Version }}-devel"
+env:
+  - GITHUB_TOKEN={{ .Env.GORELEASER_GITHUB_TOKEN }}
+release:
+  mode: keep-existing
+  header: "## Dum-commit release ({{ time \"01/02/2006\" }})\n \nCheckout the new release!\n"
+  prerelease: auto # append rc-xyz to the tag to signiify that it is a release candidate, and not a full release.
+universal_binaries:
+  - replace: false
+brews:
+  - name: dumCommit
+    homepage: https://uhlittlelessdum.com
+    description: "A simple commit conventional commits utility with support for being used as a git hook. "
+    directory: Formula
+    license: MIT
+    repository:
+      owner: Uh-little-less-dum
+      name: homebrew-dum-commit
+      branch: main
+      token: "{{ .Env.GORELEASER_GITHUB_TOKEN }}"
+    commit_author:
+      name: Uh-little-less-dum
+      email: uhlittlelessdumb@gmail.com
+    dependencies:
+      - git
+checksum:
+  name_template: checksums.txt
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+announce:
+  bluesky:
+    enabled: true
+    message_template: "A new version ULLD's commit utility is out now!"
+    username: "uhlittlelessdum.bsky.social"
