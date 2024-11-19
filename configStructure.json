@@ -1,0 +1,16 @@
+{
+    "dum-commit": {
+        "type": {
+            "height": 8,
+            "opts": [
+                "optional strings"
+            ]
+        },
+        "scope": {
+            "height": 8,
+            "opts": [
+                "optional strings"
+            ]
+        }
+    }
+}
