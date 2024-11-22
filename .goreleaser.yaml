@@ -23,8 +23,6 @@ builds:
       - windows
 snapshot:
   version_template: "{{ incpatch .Version }}-devel"
-env:
-  - GITHUB_TOKEN={{ .Env.GORELEASER_GITHUB_TOKEN }}
 release:
   mode: keep-existing
   header: "## Dum-commit release ({{ time \"01/02/2006\" }})\n \nCheckout the new release!\n"
@@ -41,7 +39,6 @@ brews:
       owner: Uh-little-less-dum
       name: homebrew-dum-commit
       branch: main
-      token: "{{ .Env.GORELEASER_GITHUB_TOKEN }}"
     commit_author:
       name: Uh-little-less-dum
       email: uhlittlelessdumb@gmail.com
